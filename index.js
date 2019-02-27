@@ -1,13 +1,13 @@
 'use strict'
 
 function testParser(string) {
-    console.log(string, boolean_parser(string))
+    console.log(string, string_parser(string))
 }
 
-testParser("true ")
-testParser(" true ")
-testParser("false")
-testParser("_trueFalse")
+testParser('"saurabh"')
+testParser(`"hee\"hhe"1234`)
+testParser(`1234"trickedYou"`)
+testParser("")
 testParser("")
 
 
@@ -25,6 +25,20 @@ function boolean_parser(data){
     }else if(data.substring(0,5) === "false"){
         return [false,data.substring(5)]
     }else{
-        return null;
+        return null
     }
 }
+
+function string_parser(data){
+    if(data[0] === '"'){
+       let dataAfterZeroPositionValue = data.substring(1)
+       let endingSemicolon = dataAfterZeroPositionValue.search('"')
+        if (endingSemicolon){
+            return [dataAfterZeroPositionValue.substring(0,endingSemicolon),
+                data.substring(endingSemicolon+2)]
+        }
+    }else{
+        return null
+    }
+}
+
