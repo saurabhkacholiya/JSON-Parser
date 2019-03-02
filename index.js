@@ -7,14 +7,14 @@ function testParser(string) {
     } catch (error) {
         
     }
-    console.log(string, string_revised(string), correct)
+    console.log(string, number_parser(string), correct)
 }
 
-testParser('"saurabh"')
-testParser(`"heehhe\\t1"`)
-testParser(`1234"trickedYou"`)
-testParser("")
-testParser("")
+testParser("satuv")
+testParser("1234e32satufb")
+testParser("---132244345")
+testParser("falfjal12ekdsf")
+testParser("e21sataufbhas")
 
 
 function null_parser(data) {
@@ -79,4 +79,14 @@ function string_revised(data) {
     } else {
         return null
     }
+}
+
+function number_parser(data){
+    let regex = /^-?(?:[1-9][0-9]*|0)(?:.[0-9]+)?(?:[eE][+-]?[0-9]+)?/
+    let match = data.match(regex)
+    if(match){ 
+        console.log("match",match)
+        return [Number(match[0]),data.slice(match[0].length)]
+    }
+    return null;
 }
