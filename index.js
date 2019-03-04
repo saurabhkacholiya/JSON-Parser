@@ -37,19 +37,6 @@ function boolean_parser(data) {
 
 function string_parser(data) {
     if (data[0] === '"') {
-        let dataAfterZeroPositionValue = data.substring(1)
-        let endingSemicolon = dataAfterZeroPositionValue.search('"')
-        if (endingSemicolon) {
-            return [dataAfterZeroPositionValue.substring(0, endingSemicolon),
-            data.substring(endingSemicolon + 2)]
-        }
-    } else {
-        return null
-    }
-}
-
-function string_revised(data) {
-    if (data[0] === '"') {
         let parsedString = '';
         let length = 0;
         for (let i = 1; i < data.length; i++) {
