@@ -7,21 +7,15 @@ function testParser(string) {
     } catch (error) {
 
     }
-    console.log(string, array_parser(string), correct)
-    console.assert(JSON.stringify((array_parser(string) || [])[0]) === JSON.stringify(correct))
+    console.log(
+        "value_parser",
+        JSON.stringify(value_parser(string), null, 2),
+        "JSON.parse",
+        JSON.stringify(JSON.parse(string), null, 2),
+    )
 }
 
-testParser("[1")
-testParser("[1 ,            2 ]")
-testParser(`[
-    "a",
-    "b",
-    12,
-    null
-]`)
-testParser("[5]")
-testParser(" []")
-testParser("[ajfalsdjf")
+testParser(``);
 
 
 function null_parser(data) {
@@ -85,8 +79,12 @@ function number_parser(data) {
 }
 
 function value_parser(data) {
-    return (string_parser(data) || number_parser(data) || null_parser(data) ||
-        boolean_parser(data))
+    return (string_parser(data)
+        || number_parser(data)
+        || null_parser(data)
+        || boolean_parser(data))
+        || array_parser(data)
+        || object_parser(data)
 }
 
 function remove_white_spaces(data) {
@@ -106,18 +104,18 @@ function remove_white_spaces(data) {
 
 function array_parser(data) {
     let previous = '';
-    if (data[0] !== '[') return null; 
+    if (data[0] !== '[') return null;
     data = data.substring(1)
     let newArray = []
     while (data) {
         data = remove_white_spaces(data)
-        if(previous === ',' && data[0] === ']') return null
-        if(previous === 'value' && data[0] !== ']') return null
+        if (previous === ',' && data[0] === ']') return null
+        if (previous === 'value' && data[0] !== ']') return null
         if (data[0] === ']') return [newArray, data.substring(1)]
         let result = value_parser(data)
         if (result) {
             newArray.push(result[0])
-            data = result[1] 
+            data = result[1]
             data = remove_white_spaces(data)
         }
         previous = 'value'
@@ -125,10 +123,40 @@ function array_parser(data) {
             data = remove_white_spaces(data.substring(1))
             previous = data[0]
         }
-        if(data === ""){
+        if (data === "") {
             return null
         }
         continue;
     }
     return [newArray, data]
+}
+
+
+function object_parser(data) {
+    if (data[0] !== '{') return null
+    let obj = {}
+    while (data) {
+        data = remove_white_spaces(data.substring(1))
+        let dataFromSubString = data
+        if (dataFromSubString[0] !== '"' && dataFromSubString[0] === '}') return {}
+        let dataFromStringParser = string_parser(dataFromSubString)
+        if (dataFromStringParser === null) return null
+        let key = dataFromStringParser[0]
+        data = dataFromStringParser[1]
+        let removeWhiteSpace = remove_white_spaces(data)
+        if (removeWhiteSpace[0] !== ':') return null
+        data = removeWhiteSpace.substring(1)
+        data = remove_white_spaces(data)
+        let dataFromValueParser = value_parser(data)
+        if (dataFromValueParser === null) return null
+        let value = dataFromValueParser[0]
+        obj[key] = value
+        data = dataFromValueParser[1]
+        data = remove_white_spaces(data)
+        if (data[0] === ',') {
+            data = data.substring(1)
+            continue
+        }
+        if (data[0] === '}') return [obj, data.substring(1)]
+    }
 }
