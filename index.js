@@ -1,4 +1,6 @@
 'use strict'
+const fs = require('fs');
+let global_data = fs.readFileSync('redit.json').toString();
 
 function testParser(string) {
     let correct = 'ERROR'
@@ -15,7 +17,7 @@ function testParser(string) {
     )
 }
 
-testParser(``);
+testParser(global_data)
 
 
 function null_parser(data) {
@@ -138,7 +140,7 @@ function object_parser(data) {
     while (data) {
         data = remove_white_spaces(data.substring(1))
         let dataFromSubString = data
-        if (dataFromSubString[0] !== '"' && dataFromSubString[0] === '}') return {}
+        if (dataFromSubString[0] !== '"' && dataFromSubString[0] === '}') return [{}, data.substring(1)]
         let dataFromStringParser = string_parser(dataFromSubString)
         if (dataFromStringParser === null) return null
         let key = dataFromStringParser[0]
