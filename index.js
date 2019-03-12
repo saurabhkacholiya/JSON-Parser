@@ -125,7 +125,7 @@ function array_parser(data) {
             data = remove_white_spaces(data.substring(1))
             previous = data[0]
         }
-        if(data === "" && data[data.length-1] !== ']'){
+        if(data === ""){
             return null
         }
         continue;
