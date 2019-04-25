@@ -1,0 +1,16 @@
+{
+    "window.zoomLevel": 1,
+    "diffEditor.ignoreTrimWhitespace": true,
+    "javascript.updateImportsOnFileMove.enabled": "never",
+    "editor.rulers": [80],
+    "workbench.colorCustomizations": {
+        "editorRuler.foreground": "#ff333388"
+    },
+    "git.autofetch": true,
+    "workbench.sideBar.location": "left",
+    "diffEditor.renderSideBySide": false,
+    "git.confirmSync": false,
+    "workbench.colorTheme": "Visual Studio Dark",
+    "editor.fontSize": 15,
+    "editor.minimap.enabled": false
+}
